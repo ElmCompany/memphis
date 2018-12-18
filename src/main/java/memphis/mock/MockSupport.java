@@ -8,10 +8,10 @@ public class MockSupport {
     public static MockedStoredProcedure getMock(String procName, Config config) {
 
         if (config.getMockStrategy() == MockStrategy.CSV_CLASSPATH) {
-            return new ClassPathCsvStoredProcedure("memphis/" + procName + "/" + decideFile(procName));
+            return new ClassPathCsvStoredProcedure("memphis/" + procName + "/" + decideWhichFile(procName));
 
         } else if (config.getMockStrategy() == MockStrategy.CSV_FILESYSTEM) {
-            return new FileSystemCsvStoredProcedure(config.getBaseFsDir() + "/" + procName + "/" + decideFile(procName));
+            return new FileSystemCsvStoredProcedure(config.getBaseFsDir() + "/" + procName + "/" + decideWhichFile(procName));
 
         } else {
             throw new IllegalArgumentException("illegal mock strategy: '" + config.getMockStrategy() +
@@ -21,7 +21,7 @@ public class MockSupport {
 
     // TODO
     // decide should be done by parsing index.csv
-    private static String decideFile(String procName) {
+    private static String decideWhichFile(String procName) {
         return "2.csv";
     }
 }
