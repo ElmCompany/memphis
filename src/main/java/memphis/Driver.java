@@ -1,6 +1,9 @@
 package memphis;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.DriverPropertyInfo;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -43,7 +46,7 @@ public class Driver implements java.sql.Driver {
         return null;
     }
 
-    private static synchronized java.sql.Driver load() {
+    private static synchronized void load() {
         try {
             if (!registered) {
                 registered = true;
@@ -52,6 +55,5 @@ public class Driver implements java.sql.Driver {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return INSTANCE;
     }
 }

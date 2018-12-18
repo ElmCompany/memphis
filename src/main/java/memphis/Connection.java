@@ -19,7 +19,7 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.CallableStatement prepareCall(String sql) throws SQLException {
-        return new CallableStatement(this, getProcName(sql));
+        return new CallableStatement(this, Util.extractProcName(sql));
     }
 
     @Override
@@ -275,9 +275,5 @@ public class Connection implements java.sql.Connection {
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return false;
-    }
-
-    private String getProcName(String sql) {
-        return "sp_test";       // TODO
     }
 }
