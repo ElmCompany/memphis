@@ -27,7 +27,7 @@ public class CsvStoredProcedureTest {
         assertThat(csvStoredProcedure.getOutputParameter("age"), is("5"));
 
         // --- as result set
-        int row = 0;
+        int row = 1;
         assertThat(csvStoredProcedure.getResultSetValue(row, 1), is("abdullah"));
         assertThat(csvStoredProcedure.getResultSetValue(row, "fistname"), is("abdullah"));
 
@@ -37,7 +37,7 @@ public class CsvStoredProcedureTest {
         assertThat(csvStoredProcedure.getResultSetValue(row, 3), is("5"));
         assertThat(csvStoredProcedure.getResultSetValue(row, "age"), is("5"));
 
-        row = 1;
+        row = 2;
         assertThat(csvStoredProcedure.getResultSetValue(row, 1), is("farida"));
         assertThat(csvStoredProcedure.getResultSetValue(row, "fistname"), is("farida"));
 

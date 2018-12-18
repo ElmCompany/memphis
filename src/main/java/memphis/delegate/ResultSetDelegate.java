@@ -1,36 +1,38 @@
 package memphis.delegate;
 
 import memphis.mock.Config;
+import memphis.mock.MockSupport;
+import memphis.mock.MockedStoredProcedure;
 
 public class ResultSetDelegate {
 
     private int row;
-    private int column;
-
-    private int total;
-    private final String procName;
+    private final int total;
+    private final MockedStoredProcedure mockedStoredProcedure;
 
     public ResultSetDelegate(String procName, Config config) {
-        this.procName = procName;
+        this.mockedStoredProcedure = MockSupport.getMock(procName, config);
+        this.total = mockedStoredProcedure.getCount();
     }
 
-    public <T> T getValue(int columnIndex) {
-        return null;
+    public String getValue(int columnIndex) {
+        return mockedStoredProcedure.getResultSetValue(row, columnIndex);
     }
 
-    public <T> T getValue(String columnLabel) {
-        return null;
+    public String getValue(String columnLabel) {
+        return mockedStoredProcedure.getResultSetValue(row, columnLabel);
     }
 
     public boolean next() {
-        return row++ < total;
+        if (row < total) {
+            row++;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public int getRow() {
         return row;
-    }
-
-    public boolean wasNull() {
-        return false;
     }
 }

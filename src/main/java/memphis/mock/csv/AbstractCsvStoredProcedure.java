@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
-public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedure {
+import static memphis.Constants.JDBC_INDEX_OFFSET;
 
-    private final static int JDBC_INDEX_OFFSET = 1;
+public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedure {
 
     private final List<CSVRecord> list;
 
@@ -37,12 +37,12 @@ public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedur
 
     @Override
     public String getResultSetValue(int row, int columnIndex) {
-        return trim(list.get(row).get(columnIndex - JDBC_INDEX_OFFSET));
+        return trim(list.get(row - JDBC_INDEX_OFFSET).get(columnIndex - JDBC_INDEX_OFFSET));
     }
 
     @Override
     public String getResultSetValue(int row, String columnLabel) {
-        return trim(list.get(row).get(columnLabel));
+        return trim(list.get(row - JDBC_INDEX_OFFSET).get(columnLabel));
     }
 
     private List<CSVRecord> load(String filename) {

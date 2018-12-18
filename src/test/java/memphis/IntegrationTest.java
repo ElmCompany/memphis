@@ -5,28 +5,46 @@ import org.junit.Test;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class IntegrationTest {
 
     @Test
-    public void test1() throws Exception {
+    public void test_Parameters() throws Exception {
         Class.forName("memphis.Driver");
         Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
         CallableStatement callableStatement = connection.prepareCall("{call sp_test(?)}");
         callableStatement.execute();
 
-        String fistname = callableStatement.getString("fistname");
-        String lastname = callableStatement.getString(2);
-        Integer age = callableStatement.getInt("age");
+        assertThat(callableStatement.getString("fistname"), is("abdullah"));
+        assertThat(callableStatement.getString(2), is("mohammad"));
+        assertThat(callableStatement.getInt("age"), is(5));
+    }
 
-        assertThat(fistname, is("abdullah"));
-        assertThat(lastname, is("mohammad"));
-        assertThat(age, is(5));
+    @Test
+    public void test_ResultSet() throws Exception {
+        Class.forName("memphis.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
+        CallableStatement callableStatement = connection.prepareCall("{call sp_test(?)}");
+        ResultSet resultSet = callableStatement.executeQuery();
+
+        assertThat(resultSet.next(), is(equalTo(true)));
+
+        assertThat(resultSet.getString("fistname"), is("abdullah"));
+        assertThat(resultSet.getString(2), is("mohammad"));
+        assertThat(resultSet.getInt("age"), is(5));
+
+        assertThat(resultSet.next(), is(equalTo(true)));
+
+        assertThat(resultSet.getString("fistname"), is("farida"));
+        assertThat(resultSet.getString(2), is("mohammad"));
+        assertThat(resultSet.getInt("age"), is(3));
+
+        assertThat(resultSet.next(), is(equalTo(false)));
     }
 
     @Test
