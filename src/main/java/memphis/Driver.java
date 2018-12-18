@@ -1,5 +1,8 @@
 package memphis;
 
+import memphis.mock.Config;
+import memphis.mock.MockStrategy;
+
 import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
@@ -19,7 +22,7 @@ public class Driver implements java.sql.Driver {
     }
 
     public java.sql.Connection connect(String url, Properties info) throws SQLException {
-        return acceptsURL(url) ? new Connection() : null;
+        return acceptsURL(url) ? new Connection(createConfig(url)) : null;
     }
 
     public boolean acceptsURL(String url) throws SQLException {
@@ -55,5 +58,10 @@ public class Driver implements java.sql.Driver {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Config createConfig(String url) {
+        return Config.of(Util.extractBaseFileSystem(url),
+                MockStrategy.from(url));
     }
 }

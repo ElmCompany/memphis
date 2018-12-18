@@ -1,11 +1,19 @@
 package memphis;
 
+import memphis.mock.Config;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class Connection implements java.sql.Connection {
+
+    private final Config config;
+
+    public Connection(Config config) {
+        this.config = config;
+    }
 
     @Override
     public Statement createStatement() throws SQLException {
@@ -19,7 +27,7 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.CallableStatement prepareCall(String sql) throws SQLException {
-        return new CallableStatement(this, Util.extractProcName(sql));
+        return new CallableStatement(this, Util.extractProcName(sql), config);
     }
 
     @Override

@@ -1,19 +1,22 @@
 package memphis.delegate;
 
+import memphis.mock.Config;
+import memphis.mock.MockSupport;
+import memphis.mock.MockedStoredProcedure;
+
 public class CallableStatementDelegate {
 
-    private final String procName;
+    private final MockedStoredProcedure mockedStoredProcedure;
 
-    public CallableStatementDelegate(String procName) {
-        this.procName = procName;
+    public CallableStatementDelegate(String procName, Config config) {
+        mockedStoredProcedure = MockSupport.getMock(procName, config);
     }
 
-    public <T> T getValue(int parameterIndex) {
-        return null;
+    public String getValue(int parameterIndex) {
+        return mockedStoredProcedure.getOutputParameter(parameterIndex);
     }
 
-    public <T> T getValue(String parameterName) {
-        return null;
+    public String getValue(String parameterName) {
+        return mockedStoredProcedure.getOutputParameter(parameterName);
     }
-
 }

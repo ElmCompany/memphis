@@ -1,5 +1,7 @@
 package memphis.delegate;
 
+import memphis.mock.Config;
+
 public class ResultSetDelegate {
 
     private int row;
@@ -8,7 +10,7 @@ public class ResultSetDelegate {
     private int total;
     private final String procName;
 
-    public ResultSetDelegate(String procName) {
+    public ResultSetDelegate(String procName, Config config) {
         this.procName = procName;
     }
 

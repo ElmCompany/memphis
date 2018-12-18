@@ -2,6 +2,7 @@ package memphis;
 
 import org.junit.Test;
 
+import static memphis.Util.extractBaseFileSystem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -40,5 +41,11 @@ public class UtilTest {
     @Test
     public void testExtractProcName7() {
         assertThat(Util.extractProcName("{ ? = call test (?) }"), is("test"));
+    }
+
+    @Test
+    public void testExtractBaseFileSystem() {
+        assertThat(extractBaseFileSystem("jdbc:memphis:csv:file:///home/mhewedy/mocks"),
+                is("/home/mhewedy/mocks"));
     }
 }

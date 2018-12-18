@@ -15,7 +15,7 @@ public class DriverTest {
     @Test
     public void testGetConnection() throws Exception {
         Class.forName("memphis.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:memphis:", "", "");
+        Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
 
         assertThat(connection, instanceOf(memphis.Connection.class));
     }
@@ -23,8 +23,8 @@ public class DriverTest {
     @Test
     public void testGetCallableStatement() throws Exception {
         Class.forName("memphis.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:memphis:", "", "");
-        CallableStatement callableStatement = connection.prepareCall("{call sp_name(?, ?)}");
+        Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
+        CallableStatement callableStatement = connection.prepareCall("{call sp_test(?, ?)}");
 
         assertThat(callableStatement, instanceOf(memphis.CallableStatement.class));
     }
@@ -32,8 +32,8 @@ public class DriverTest {
     @Test
     public void testGetResultSet() throws Exception {
         Class.forName("memphis.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:memphis:", "", "");
-        CallableStatement callableStatement = connection.prepareCall("{call sp_name(?, ?)}");
+        Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
+        CallableStatement callableStatement = connection.prepareCall("{call sp_test(?, ?)}");
         ResultSet resultSet = callableStatement.executeQuery();
 
         assertThat(resultSet, instanceOf(memphis.ResultSet.class));

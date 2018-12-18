@@ -1,10 +1,15 @@
 package memphis;
 
 import memphis.delegate.CallableStatementDelegate;
+import memphis.mock.Config;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialClob;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
@@ -16,10 +21,10 @@ public class CallableStatement implements java.sql.CallableStatement {
     private final Connection connection;
     private final CallableStatementDelegate delegate;
 
-    CallableStatement(Connection connection, String procName) {
+    CallableStatement(Connection connection, String procName, Config config) {
         this.connection = connection;
-        this.resultSet = new ResultSet(this, procName);
-        this.delegate = new CallableStatementDelegate(procName);
+        this.resultSet = new ResultSet(this, procName, config);
+        this.delegate = new CallableStatementDelegate(procName, config);
     }
 
     @Override
@@ -44,62 +49,62 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public boolean getBoolean(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Boolean.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public byte getByte(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Byte.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public short getShort(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Short.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public int getInt(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Integer.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public long getLong(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Long.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public float getFloat(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Float.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public double getDouble(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Double.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new BigDecimal(delegate.getValue(parameterIndex));
     }
 
     @Override
     public byte[] getBytes(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return delegate.getValue(parameterIndex).getBytes();
     }
 
     @Override
     public Date getDate(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Date.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Time getTime(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Time.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Timestamp getTimestamp(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Timestamp.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
@@ -109,7 +114,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public BigDecimal getBigDecimal(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new BigDecimal(delegate.getValue(parameterIndex));
     }
 
     @Override
@@ -119,37 +124,37 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public Ref getRef(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        throw new UnsupportedOperationException("getRef");
     }
 
     @Override
     public Blob getBlob(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new SerialBlob(delegate.getValue(parameterIndex).getBytes());
     }
 
     @Override
     public Clob getClob(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new SerialClob(delegate.getValue(parameterIndex).toCharArray());
     }
 
     @Override
     public Array getArray(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        throw new UnsupportedOperationException("getArray");
     }
 
     @Override
     public Date getDate(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Date.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Time.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return Timestamp.valueOf(delegate.getValue(parameterIndex));
     }
 
     @Override
@@ -174,7 +179,11 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public URL getURL(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        try {
+            return new URL(delegate.getValue(parameterIndex));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -309,57 +318,57 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public boolean getBoolean(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Boolean.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public byte getByte(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Byte.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public short getShort(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Short.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public int getInt(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Integer.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public long getLong(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Long.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public float getFloat(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Float.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public double getDouble(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Double.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public byte[] getBytes(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return delegate.getValue(parameterName).getBytes();
     }
 
     @Override
     public Date getDate(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Date.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public Time getTime(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Time.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public Timestamp getTimestamp(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Timestamp.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
@@ -369,7 +378,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public BigDecimal getBigDecimal(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return new BigDecimal(delegate.getValue(parameterName));
     }
 
     @Override
@@ -379,52 +388,56 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public Ref getRef(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        throw new UnsupportedOperationException("getRef");
     }
 
     @Override
     public Blob getBlob(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return new SerialBlob(delegate.getValue(parameterName).getBytes());
     }
 
     @Override
     public Clob getClob(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return new SerialClob(delegate.getValue(parameterName).toCharArray());
     }
 
     @Override
     public Array getArray(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        throw new UnsupportedOperationException("getArray");
     }
 
     @Override
     public Date getDate(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Date.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public Time getTime(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Time.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName);
+        return Timestamp.valueOf(delegate.getValue(parameterName));
     }
 
     @Override
     public URL getURL(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        try {
+            return new URL(delegate.getValue(parameterName));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public RowId getRowId(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        throw new UnsupportedOperationException("getRowId");
     }
 
     @Override
     public RowId getRowId(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        throw new UnsupportedOperationException("getRowId");
     }
 
     @Override
@@ -464,12 +477,12 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public NClob getNClob(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        throw new UnsupportedOperationException("getNClob");
     }
 
     @Override
     public NClob getNClob(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        throw new UnsupportedOperationException("getNClob");
     }
 
     @Override
@@ -479,12 +492,12 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public SQLXML getSQLXML(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        throw new UnsupportedOperationException("getSQLXML");
     }
 
     @Override
     public SQLXML getSQLXML(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        throw new UnsupportedOperationException("getSQLXML");
     }
 
     @Override
@@ -499,22 +512,22 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public Reader getNCharacterStream(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new StringReader(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Reader getNCharacterStream(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return new StringReader(delegate.getValue(parameterName));
     }
 
     @Override
     public Reader getCharacterStream(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        return new StringReader(delegate.getValue(parameterIndex));
     }
 
     @Override
     public Reader getCharacterStream(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName);
+        return new StringReader(delegate.getValue(parameterName));
     }
 
     @Override
@@ -579,12 +592,36 @@ public class CallableStatement implements java.sql.CallableStatement {
 
     @Override
     public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
-        return delegate.getValue(parameterIndex);
+        Object o;
+        if (type.isAssignableFrom(String.class)) {
+            o = getString(parameterIndex);
+        } else if (type.isAssignableFrom(Integer.class)) {
+            o = getInt(parameterIndex);
+        } else if (type.isAssignableFrom(Boolean.class)) {
+            o = getBoolean(parameterIndex);
+        } else if (type.isAssignableFrom(Double.class)) {
+            o = getDouble(parameterIndex);
+        } else {
+            throw new IllegalArgumentException("Bad type.");
+        }
+        return type.cast(o);
     }
 
     @Override
     public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
-        return delegate.getValue(parameterName);
+        Object o;
+        if (type.isAssignableFrom(String.class)) {
+            o = getString(parameterName);
+        } else if (type.isAssignableFrom(Integer.class)) {
+            o = getInt(parameterName);
+        } else if (type.isAssignableFrom(Boolean.class)) {
+            o = getBoolean(parameterName);
+        } else if (type.isAssignableFrom(Double.class)) {
+            o = getDouble(parameterName);
+        } else {
+            throw new IllegalArgumentException("Bad type.");
+        }
+        return type.cast(o);
     }
 
     @Override
