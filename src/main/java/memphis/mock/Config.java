@@ -1,12 +1,12 @@
 package memphis.mock;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor(staticName = "of")
+@RequiredArgsConstructor(staticName = "of")
 public class Config {
 
-    private String baseFsDir;
-    private MockStrategy mockStrategy;
+    private final String baseFsDir;
+    private final MockStrategy mockStrategy;
 }

@@ -22,7 +22,7 @@ public class CallableStatement implements java.sql.CallableStatement {
     private final Connection connection;
     private final CallableStatementDelegate delegate;
 
-    CallableStatement(Connection connection, String procName, Config config) {
+    public CallableStatement(Connection connection, String procName, Config config) {
         this.connection = connection;
         this.resultSet = new ResultSet(this, procName, config);
         this.delegate = new CallableStatementDelegate(procName, config);

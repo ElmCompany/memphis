@@ -7,7 +7,11 @@ import static memphis.Constants.JDBC_START;
 public enum MockStrategy {
 
     CSV_CLASSPATH(JDBC_START + "csv:classpath"),
-    CSV_FILESYSTEM(JDBC_START + "csv:file://");
+    CSV_FILESYSTEM(JDBC_START + "csv:file://"),
+    /**
+     * placeholder used in case of Statement and PreparedStatement
+     */
+    DUMMY("");
 
     private String jdbcUrlStart;
 

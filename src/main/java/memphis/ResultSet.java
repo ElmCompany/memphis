@@ -19,10 +19,10 @@ import java.util.Map;
 
 public class ResultSet implements java.sql.ResultSet {
 
-    private final ResultSetDelegate delegate;
+    protected ResultSetDelegate delegate;
     private final CallableStatement callableStatement;
 
-    ResultSet(CallableStatement callableStatement, String procName, Config config) {
+    public ResultSet(CallableStatement callableStatement, String procName, Config config) {
         this.callableStatement = callableStatement;
         this.delegate = new ResultSetDelegate(procName, config);
     }
