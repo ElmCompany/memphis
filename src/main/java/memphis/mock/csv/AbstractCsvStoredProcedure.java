@@ -9,8 +9,11 @@ import java.io.Reader;
 import java.util.List;
 
 import static memphis.Constants.JDBC_INDEX_OFFSET;
+import static memphis.Util.apply;
 
 public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedure {
+
+    private static final String NULL = "NULL";
 
     private final List<CSVRecord> list;
 
@@ -27,22 +30,30 @@ public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedur
 
     @Override
     public String getOutputParameter(int parameterIndex) {
-        return trim(list.get(0).get(parameterIndex - JDBC_INDEX_OFFSET));
+        return apply(list.get(0).get(parameterIndex - JDBC_INDEX_OFFSET),
+                this::trim,
+                this::toNullIfRequired);
     }
 
     @Override
     public String getOutputParameter(String parameterName) {
-        return trim(list.get(0).get(parameterName));
+        return apply(list.get(0).get(parameterName),
+                this::trim,
+                this::toNullIfRequired);
     }
 
     @Override
     public String getResultSetValue(int row, int columnIndex) {
-        return trim(list.get(row - JDBC_INDEX_OFFSET).get(columnIndex - JDBC_INDEX_OFFSET));
+        return apply(list.get(row - JDBC_INDEX_OFFSET).get(columnIndex - JDBC_INDEX_OFFSET),
+                this::trim,
+                this::toNullIfRequired);
     }
 
     @Override
     public String getResultSetValue(int row, String columnLabel) {
-        return trim(list.get(row - JDBC_INDEX_OFFSET).get(columnLabel));
+        return apply(list.get(row - JDBC_INDEX_OFFSET).get(columnLabel),
+                this::trim,
+                this::toNullIfRequired);
     }
 
     private List<CSVRecord> load(String filename) {
@@ -61,5 +72,9 @@ public abstract class AbstractCsvStoredProcedure implements MockedStoredProcedur
 
     private String trim(String input) {
         return input != null ? input.trim() : null;
+    }
+
+    private String toNullIfRequired(String input) {
+        return NULL.equals(input) ? null : input;
     }
 }

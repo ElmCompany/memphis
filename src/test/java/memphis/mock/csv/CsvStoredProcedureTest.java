@@ -4,6 +4,7 @@ import memphis.mock.MockedStoredProcedure;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class CsvStoredProcedureTest {
@@ -50,7 +51,7 @@ public class CsvStoredProcedureTest {
 
     @Test
     public void testLoad_withEmptyField() {
-        MockedStoredProcedure csvStoredProcedure = new ClassPathCsvStoredProcedure("test1.csv");
+        MockedStoredProcedure csvStoredProcedure = new ClassPathCsvStoredProcedure("withEmpty.csv");
 
         int total = csvStoredProcedure.getCount();
 
@@ -65,6 +66,36 @@ public class CsvStoredProcedureTest {
 
         assertThat(csvStoredProcedure.getOutputParameter(3), is("5"));
         assertThat(csvStoredProcedure.getOutputParameter("age"), is("5"));
+    }
+
+    @Test
+    public void testLoad_withEmptyAndNullField() {
+        MockedStoredProcedure csvStoredProcedure = new ClassPathCsvStoredProcedure("withNulls.csv");
+
+        int total = csvStoredProcedure.getCount();
+
+        assertThat(total, is(2));
+
+        int row = 1;
+        assertThat(csvStoredProcedure.getResultSetValue(row, 1), is("abdullah"));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "fistname"), is("abdullah"));
+
+        assertThat(csvStoredProcedure.getResultSetValue(row, 2), is(""));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "lastname"), is(""));
+
+        assertThat(csvStoredProcedure.getResultSetValue(row, 3), is("5"));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "age"), is("5"));
+
+        row = 2;
+        assertThat(csvStoredProcedure.getResultSetValue(row, 1), is("farida"));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "fistname"), is("farida"));
+
+        assertThat(csvStoredProcedure.getResultSetValue(row, 2), is(nullValue()));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "lastname"), is(nullValue()));
+
+        assertThat(csvStoredProcedure.getResultSetValue(row, 3), is("3"));
+        assertThat(csvStoredProcedure.getResultSetValue(row, "age"), is("3"));
+
     }
 
 }

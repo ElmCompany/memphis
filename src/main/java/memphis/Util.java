@@ -2,6 +2,7 @@ package memphis;
 
 import memphis.mock.MockStrategy;
 
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class Util {
@@ -20,5 +21,14 @@ public class Util {
         }
 
         return jdbcUrl.replace(jdbcUrlStart, "");
+    }
+
+    @SafeVarargs
+    public static <T> T apply(T input, UnaryOperator<T>... operators) {
+        T output = input;
+        for (UnaryOperator<T> function : operators) {
+            output = function.apply(output);
+        }
+        return output;
     }
 }

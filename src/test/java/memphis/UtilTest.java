@@ -3,6 +3,7 @@ package memphis;
 import org.junit.Test;
 
 import static memphis.Util.extractBaseFileSystem;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -47,5 +48,11 @@ public class UtilTest {
     public void testExtractBaseFileSystem() {
         assertThat(extractBaseFileSystem("jdbc:memphis:csv:file:///home/mhewedy/mocks"),
                 is("/home/mhewedy/mocks"));
+    }
+
+    @Test
+    public void testApply() {
+        String value = Util.apply(" hello ", String::toUpperCase, String::trim);
+        assertThat(value, is(equalTo("HELLO")));
     }
 }
