@@ -26,6 +26,14 @@ callableStatement.execute();
 
 ```
 
+#### Nulls handling:
+nulls should be represented in CSV files as `NULL`
+example:
+```csv
+fistname,lastname,age,nullInt,nullDate
+abdullah,mohammad,5  ,NULL   ,NULL
+farida  ,mohammad,3  ,NULL   ,NULL
+```
+
 ### TODO
 1. `MockSupport.determineCsvFile`
-2. handling nulls in csv

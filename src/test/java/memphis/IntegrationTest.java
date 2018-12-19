@@ -58,4 +58,30 @@ public class IntegrationTest {
             assertThat(ex.getMessage(), startsWith("filename not found: "));
         }
     }
+
+    @Test
+    public void test_Parameters_WithNull_WithInteger() throws Exception {
+        Class.forName("memphis.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
+        CallableStatement callableStatement = connection.prepareCall("{call sp_test(?)}");
+        ResultSet resultSet = callableStatement.executeQuery();
+
+        assertThat(callableStatement.getInt("nullInt"), is(0));
+        assertThat(callableStatement.wasNull(), is(true));
+
+        assertThat(callableStatement.getDate("nullDate"), is(nullValue()));
+
+        assertThat(callableStatement.getString("fistname"), is(notNullValue()));
+        assertThat(callableStatement.wasNull(), is(false));
+
+        while (resultSet.next()) {
+            assertThat(resultSet.getInt("nullInt"), is(0));
+            assertThat(resultSet.wasNull(), is(true));
+
+            assertThat(resultSet.getDate("nullDate"), is(nullValue()));
+
+            assertThat(resultSet.getString("fistname"), is(notNullValue()));
+            assertThat(resultSet.wasNull(), is(false));
+        }
+    }
 }
