@@ -61,7 +61,6 @@ public class Driver implements java.sql.Driver {
     }
 
     private Config createConfig(String url) {
-        return Config.of(Util.extractBaseFileSystem(url),
-                MockStrategy.from(url));
+        return Config.of(Util.extractBaseFileSystem(url), MockStrategy.from(url));
     }
 }

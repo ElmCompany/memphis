@@ -1,3 +1,3 @@
-parameter_name,parameter_value,file
-user_id       ,123            ,1.csv
-user_id       ,456            ,2.csv
+parameters               ,file
+user_id=123              ,1.csv
+param1=root;param2=123456,2.csv
