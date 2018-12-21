@@ -51,8 +51,9 @@ public class IntegrationTest {
     public void test_invalidSpName() throws Exception {
         Class.forName("memphis.Driver");
         Connection connection = DriverManager.getConnection("jdbc:memphis:csv:classpath", "", "");
+        CallableStatement callableStatement = connection.prepareCall("{?=call xyz_not_found(?)}");
         try {
-            connection.prepareCall("{?=call xyz_not_found(?)}");
+            callableStatement.execute();
             fail("should fail now");
         } catch (RuntimeException ex) {
             assertThat(ex.getMessage(), startsWith("filename not found: "));
