@@ -1,31 +1,19 @@
-package memphis;
+package memphis.base;
 
-import memphis.base.AbstractCallableStatement;
-import memphis.delegate.CallableStatementDelegate;
-import memphis.delegate.ThrowableFunction;
-import memphis.mock.Config;
-
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialClob;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.StringReader;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Map;
 
-public class CallableStatement extends AbstractCallableStatement {
+public abstract class AbstractCallableStatement implements CallableStatement {
 
-    private final ResultSet resultSet;
-    private final CallableStatementDelegate delegate;
+    private final Connection connection;
 
-    public CallableStatement(Connection connection, String procName, Config config) {
-        super(connection);
-        this.resultSet = new ResultSet(this, procName, config);
-        this.delegate = new CallableStatementDelegate(procName, config);
+    protected AbstractCallableStatement(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -40,122 +28,122 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public boolean wasNull() throws SQLException {
-        return delegate.wasNull();
+        return false;
     }
 
     @Override
     public String getString(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public boolean getBoolean(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Boolean::valueOf, "false");
+        return false;
     }
 
     @Override
     public byte getByte(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Byte::valueOf, "0");
+        return 0;
     }
 
     @Override
     public short getShort(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Short::valueOf, "0");
+        return 0;
     }
 
     @Override
     public int getInt(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Integer::valueOf, "0");
+        return 0;
     }
 
     @Override
     public long getLong(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Long::valueOf, "0");
+        return 0;
     }
 
     @Override
     public float getFloat(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Float::valueOf, "0");
+        return 0;
     }
 
     @Override
     public double getDouble(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Double::valueOf, "0");
+        return 0;
     }
 
     @Override
     public BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
-        return delegate.getValue(parameterIndex, BigDecimal::new);
+        return null;
     }
 
     @Override
     public byte[] getBytes(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, String::getBytes);
+        return new byte[0];
     }
 
     @Override
     public Date getDate(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public Object getObject(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public BigDecimal getBigDecimal(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, BigDecimal::new);
+        return null;
     }
 
     @Override
     public Object getObject(int parameterIndex, Map<String, Class<?>> map) throws SQLException {
-        return delegate.getValue(parameterIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Ref getRef(int parameterIndex) throws SQLException {
-        throw new UnsupportedOperationException("getRef");
+        return null;
     }
 
     @Override
     public Blob getBlob(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, it -> new SerialBlob(it.getBytes()));
+        return null;
     }
 
     @Override
     public Clob getClob(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, it -> new SerialClob(it.toCharArray()));
+        return null;
     }
 
     @Override
     public Array getArray(int parameterIndex) throws SQLException {
-        throw new UnsupportedOperationException("getArray");
+        return null;
     }
 
     @Override
     public Date getDate(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterIndex, Timestamp::valueOf);
+        return null;
     }
 
     @Override
@@ -180,13 +168,7 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public URL getURL(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, it -> {
-            try {
-                return new URL(it);
-            } catch (MalformedURLException e) {
-                throw new SQLException(e);
-            }
-        });
+        return null;
     }
 
     @Override
@@ -316,133 +298,127 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public String getString(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public boolean getBoolean(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Boolean::valueOf, "false");
+        return false;
     }
 
     @Override
     public byte getByte(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Byte::valueOf, "0");
+        return 0;
     }
 
     @Override
     public short getShort(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Short::valueOf, "0");
+        return 0;
     }
 
     @Override
     public int getInt(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Integer::valueOf, "0");
+        return 0;
     }
 
     @Override
     public long getLong(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Long::valueOf, "0");
+        return 0;
     }
 
     @Override
     public float getFloat(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Float::valueOf, "0");
+        return 0;
     }
 
     @Override
     public double getDouble(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Double::valueOf, "0");
+        return 0;
     }
 
     @Override
     public byte[] getBytes(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, String::getBytes);
+        return new byte[0];
     }
 
     @Override
     public Date getDate(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public Object getObject(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public BigDecimal getBigDecimal(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, BigDecimal::new);
+        return null;
     }
 
     @Override
     public Object getObject(String parameterName, Map<String, Class<?>> map) throws SQLException {
-        return delegate.getValue(parameterName, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Ref getRef(String parameterName) throws SQLException {
-        throw new UnsupportedOperationException("getRef");
+        return null;
     }
 
     @Override
     public Blob getBlob(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, it -> new SerialBlob(it.getBytes()));
+        return null;
     }
 
     @Override
     public Clob getClob(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, it -> new SerialClob(it.toCharArray()));
+        return null;
     }
 
     @Override
     public Array getArray(String parameterName) throws SQLException {
-        throw new UnsupportedOperationException("getArray");
+        return null;
     }
 
     @Override
     public Date getDate(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
-        return delegate.getValue(parameterName, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public URL getURL(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, it -> {
-            try {
-                return new URL(it);
-            } catch (MalformedURLException e) {
-                throw new SQLException(e);
-            }
-        });
+        return null;
     }
 
     @Override
     public RowId getRowId(int parameterIndex) throws SQLException {
-        throw new UnsupportedOperationException("getRowId");
+        return null;
     }
 
     @Override
     public RowId getRowId(String parameterName) throws SQLException {
-        throw new UnsupportedOperationException("getRowId");
+        return null;
     }
 
     @Override
@@ -482,12 +458,12 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public NClob getNClob(int parameterIndex) throws SQLException {
-        throw new UnsupportedOperationException("getNClob");
+        return null;
     }
 
     @Override
     public NClob getNClob(String parameterName) throws SQLException {
-        throw new UnsupportedOperationException("getNClob");
+        return null;
     }
 
     @Override
@@ -497,42 +473,42 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public SQLXML getSQLXML(int parameterIndex) throws SQLException {
-        throw new UnsupportedOperationException("getSQLXML");
+        return null;
     }
 
     @Override
     public SQLXML getSQLXML(String parameterName) throws SQLException {
-        throw new UnsupportedOperationException("getSQLXML");
+        return null;
     }
 
     @Override
     public String getNString(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public String getNString(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Reader getNCharacterStream(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, StringReader::new);
+        return null;
     }
 
     @Override
     public Reader getNCharacterStream(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, StringReader::new);
+        return null;
     }
 
     @Override
     public Reader getCharacterStream(int parameterIndex) throws SQLException {
-        return delegate.getValue(parameterIndex, StringReader::new);
+        return null;
     }
 
     @Override
     public Reader getCharacterStream(String parameterName) throws SQLException {
-        return delegate.getValue(parameterName, StringReader::new);
+        return null;
     }
 
     @Override
@@ -597,41 +573,17 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
-        Object o;
-        if (type.isAssignableFrom(String.class)) {
-            o = getString(parameterIndex);
-        } else if (type.isAssignableFrom(Integer.class)) {
-            o = getInt(parameterIndex);
-        } else if (type.isAssignableFrom(Boolean.class)) {
-            o = getBoolean(parameterIndex);
-        } else if (type.isAssignableFrom(Double.class)) {
-            o = getDouble(parameterIndex);
-        } else {
-            throw new IllegalArgumentException("Bad type.");
-        }
-        return type.cast(o);
+        return null;
     }
 
     @Override
     public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
-        Object o;
-        if (type.isAssignableFrom(String.class)) {
-            o = getString(parameterName);
-        } else if (type.isAssignableFrom(Integer.class)) {
-            o = getInt(parameterName);
-        } else if (type.isAssignableFrom(Boolean.class)) {
-            o = getBoolean(parameterName);
-        } else if (type.isAssignableFrom(Double.class)) {
-            o = getDouble(parameterName);
-        } else {
-            throw new IllegalArgumentException("Bad type.");
-        }
-        return type.cast(o);
+        return null;
     }
 
     @Override
-    public java.sql.ResultSet executeQuery() throws SQLException {
-        return resultSet;
+    public ResultSet executeQuery() throws SQLException {
+        return null;
     }
 
     @Override
@@ -741,7 +693,7 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public boolean execute() throws SQLException {
-        return true;
+        return false;
     }
 
     @Override
@@ -905,8 +857,8 @@ public class CallableStatement extends AbstractCallableStatement {
     }
 
     @Override
-    public java.sql.ResultSet executeQuery(String sql) throws SQLException {
-        return resultSet;
+    public ResultSet executeQuery(String sql) throws SQLException {
+        return null;
     }
 
     @Override
@@ -976,17 +928,17 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public boolean execute(String sql) throws SQLException {
-        return true;
+        return false;
     }
 
     @Override
-    public java.sql.ResultSet getResultSet() throws SQLException {
-        return resultSet;
+    public ResultSet getResultSet() throws SQLException {
+        return null;
     }
 
     @Override
     public int getUpdateCount() throws SQLException {
-        return -1;
+        return 0;
     }
 
     @Override
@@ -1036,7 +988,12 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public int[] executeBatch() throws SQLException {
-        return new int[]{};
+        return new int[0];
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException {
+        return connection;
     }
 
     @Override
@@ -1045,8 +1002,8 @@ public class CallableStatement extends AbstractCallableStatement {
     }
 
     @Override
-    public java.sql.ResultSet getGeneratedKeys() throws SQLException {
-        return resultSet;
+    public ResultSet getGeneratedKeys() throws SQLException {
+        return null;
     }
 
     @Override
@@ -1066,17 +1023,17 @@ public class CallableStatement extends AbstractCallableStatement {
 
     @Override
     public boolean execute(String sql, int autoGeneratedKeys) throws SQLException {
-        return true;
+        return false;
     }
 
     @Override
     public boolean execute(String sql, int[] columnIndexes) throws SQLException {
-        return true;
+        return false;
     }
 
     @Override
     public boolean execute(String sql, String[] columnNames) throws SQLException {
-        return true;
+        return false;
     }
 
     @Override

@@ -1,35 +1,24 @@
-package memphis;
+package memphis.base;
 
-import memphis.base.AbstractResultSet;
-import memphis.delegate.ResultSetDelegate;
-import memphis.delegate.ThrowableFunction;
-import memphis.mock.Config;
-
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialClob;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.StringReader;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Map;
 
-public class ResultSet extends AbstractResultSet {
+public abstract class AbstractResultSet implements ResultSet {
 
-    private final ResultSetDelegate delegate;
+    private final Statement statement;
 
-    ResultSet(CallableStatement callableStatement, String procName, Config config) {
-        super(callableStatement);
-        this.delegate = new ResultSetDelegate(procName, config);
+    protected AbstractResultSet(Statement statement) {
+        this.statement = statement;
     }
 
     @Override
     public boolean next() throws SQLException {
-        return delegate.next();
+        return false;
     }
 
     @Override
@@ -39,167 +28,167 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public boolean wasNull() throws SQLException {
-        return delegate.wasNull();
+        return false;
     }
 
     @Override
     public String getString(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public boolean getBoolean(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Boolean::valueOf, "false");
+        return false;
     }
 
     @Override
     public byte getByte(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Byte::valueOf, "0");
+        return 0;
     }
 
     @Override
     public short getShort(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Short::valueOf, "0");
+        return 0;
     }
 
     @Override
     public int getInt(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Integer::valueOf, "0");
+        return 0;
     }
 
     @Override
     public long getLong(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Long::valueOf, "0");
+        return 0;
     }
 
     @Override
     public float getFloat(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Float::valueOf, "0");
+        return 0;
     }
 
     @Override
     public double getDouble(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Double::valueOf, "0");
+        return 0;
     }
 
     @Override
     public BigDecimal getBigDecimal(int columnIndex, int scale) throws SQLException {
-        return delegate.getValue(columnIndex, BigDecimal::new);
+        return null;
     }
 
     @Override
     public byte[] getBytes(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, String::getBytes);
+        return new byte[0];
     }
 
     @Override
     public Date getDate(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public InputStream getAsciiStream(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
     public InputStream getUnicodeStream(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
     public InputStream getBinaryStream(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
     public String getString(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Boolean::valueOf, "false");
+        return false;
     }
 
     @Override
     public byte getByte(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Byte::valueOf, "0");
+        return 0;
     }
 
     @Override
     public short getShort(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Short::valueOf, "0");
+        return 0;
     }
 
     @Override
     public int getInt(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Integer::valueOf, "0");
+        return 0;
     }
 
     @Override
     public long getLong(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Long::valueOf, "0");
+        return 0;
     }
 
     @Override
     public float getFloat(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Float::valueOf, "0");
+        return 0;
     }
 
     @Override
     public double getDouble(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Double::valueOf, "0");
+        return 0;
     }
 
     @Override
     public BigDecimal getBigDecimal(String columnLabel, int scale) throws SQLException {
-        return delegate.getValue(columnLabel, BigDecimal::new);
+        return null;
     }
 
     @Override
     public byte[] getBytes(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, String::getBytes);
+        return new byte[0];
     }
 
     @Override
     public Date getDate(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public InputStream getAsciiStream(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
     public InputStream getUnicodeStream(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
     public InputStream getBinaryStream(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> new ByteArrayInputStream(it.getBytes()));
+        return null;
     }
 
     @Override
@@ -224,12 +213,12 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public Object getObject(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Object getObject(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
@@ -239,22 +228,22 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public Reader getCharacterStream(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, StringReader::new);
+        return null;
     }
 
     @Override
     public Reader getCharacterStream(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, StringReader::new);
+        return null;
     }
 
     @Override
     public BigDecimal getBigDecimal(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, BigDecimal::new);
+        return null;
     }
 
     @Override
     public BigDecimal getBigDecimal(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, BigDecimal::new);
+        return null;
     }
 
     @Override
@@ -299,7 +288,7 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public int getRow() throws SQLException {
-        return delegate.getRow();
+        return 0;
     }
 
     @Override
@@ -588,105 +577,98 @@ public class ResultSet extends AbstractResultSet {
     }
 
     @Override
+    public Statement getStatement() throws SQLException {
+        return statement;
+    }
+
+    @Override
     public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
-        return delegate.getValue(columnIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Ref getRef(int columnIndex) throws SQLException {
-        throw new UnsupportedOperationException("getRef");
+        return null;
     }
 
     @Override
     public Blob getBlob(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> new SerialBlob(it.getBytes()));
+        return null;
     }
 
     @Override
     public Clob getClob(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> new SerialClob(it.toCharArray()));
+        return null;
     }
 
     @Override
     public Array getArray(int columnIndex) throws SQLException {
-        throw new UnsupportedOperationException("getArray");
+        return null;
     }
 
     @Override
     public Object getObject(String columnLabel, Map<String, Class<?>> map) throws SQLException {
-        return delegate.getValue(columnLabel, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Ref getRef(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("getRef");
+        return null;
     }
 
     @Override
     public Blob getBlob(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> new SerialBlob(it.getBytes()));
+        return null;
     }
 
     @Override
     public Clob getClob(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> new SerialClob(it.toCharArray()));
+        return null;
     }
 
     @Override
     public Array getArray(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("getArray");
+        return null;
     }
 
     @Override
     public Date getDate(int columnIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(columnIndex, Date::valueOf);
+        return null;
     }
 
     @Override
     public Date getDate(String columnLabel, Calendar cal) throws SQLException {
-        return delegate.getValue(columnLabel, Date::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(int columnIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(columnIndex, Time::valueOf);
+        return null;
     }
 
     @Override
     public Time getTime(String columnLabel, Calendar cal) throws SQLException {
-        return delegate.getValue(columnLabel, Time::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(int columnIndex, Calendar cal) throws SQLException {
-        return delegate.getValue(columnIndex, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public Timestamp getTimestamp(String columnLabel, Calendar cal) throws SQLException {
-        return delegate.getValue(columnLabel, Timestamp::valueOf);
+        return null;
     }
 
     @Override
     public URL getURL(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, it -> {
-            try {
-                return new URL(it);
-            } catch (MalformedURLException e) {
-                throw new SQLException(e);
-            }
-        });
+        return null;
     }
 
     @Override
     public URL getURL(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, it -> {
-            try {
-                return new URL(it);
-            } catch (MalformedURLException e) {
-                throw new SQLException(e);
-            }
-        });
+        return null;
     }
 
     @Override
@@ -781,22 +763,22 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public NClob getNClob(int columnIndex) throws SQLException {
-        throw new UnsupportedOperationException("NClob");
+        return null;
     }
 
     @Override
     public NClob getNClob(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("NClob");
+        return null;
     }
 
     @Override
     public SQLXML getSQLXML(int columnIndex) throws SQLException {
-        throw new UnsupportedOperationException("SQLXML");
+        return null;
     }
 
     @Override
     public SQLXML getSQLXML(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("SQLXML");
+        return null;
     }
 
     @Override
@@ -811,22 +793,22 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public String getNString(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public String getNString(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, ThrowableFunction.identity());
+        return null;
     }
 
     @Override
     public Reader getNCharacterStream(int columnIndex) throws SQLException {
-        return delegate.getValue(columnIndex, StringReader::new);
+        return null;
     }
 
     @Override
     public Reader getNCharacterStream(String columnLabel) throws SQLException {
-        return delegate.getValue(columnLabel, StringReader::new);
+        return null;
     }
 
     @Override
@@ -971,36 +953,12 @@ public class ResultSet extends AbstractResultSet {
 
     @Override
     public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
-        Object o;
-        if (type.isAssignableFrom(String.class)) {
-            o = getString(columnIndex);
-        } else if (type.isAssignableFrom(Integer.class)) {
-            o = getInt(columnIndex);
-        } else if (type.isAssignableFrom(Boolean.class)) {
-            o = getBoolean(columnIndex);
-        } else if (type.isAssignableFrom(Double.class)) {
-            o = getDouble(columnIndex);
-        } else {
-            throw new IllegalArgumentException("Bad type.");
-        }
-        return type.cast(o);
+        return null;
     }
 
     @Override
     public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
-        Object o;
-        if (type.isAssignableFrom(String.class)) {
-            o = getString(columnLabel);
-        } else if (type.isAssignableFrom(Integer.class)) {
-            o = getInt(columnLabel);
-        } else if (type.isAssignableFrom(Boolean.class)) {
-            o = getBoolean(columnLabel);
-        } else if (type.isAssignableFrom(Double.class)) {
-            o = getDouble(columnLabel);
-        } else {
-            throw new IllegalArgumentException("Bad type.");
-        }
-        return type.cast(o);
+        return null;
     }
 
     @Override
