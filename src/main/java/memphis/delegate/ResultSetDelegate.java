@@ -1,7 +1,5 @@
 package memphis.delegate;
 
-import memphis.mock.Config;
-import memphis.mock.MockSupport;
 import memphis.mock.MockedStoredProcedure;
 
 public class ResultSetDelegate extends AbstractDelegate {
@@ -12,8 +10,8 @@ public class ResultSetDelegate extends AbstractDelegate {
     private final int total;
     private final MockedStoredProcedure mockedStoredProcedure;
 
-    public ResultSetDelegate(String procName, Config config) {
-        this.mockedStoredProcedure = MockSupport.getMock(procName, config);
+    public ResultSetDelegate(MockedStoredProcedure mockedStoredProcedure) {
+        this.mockedStoredProcedure = mockedStoredProcedure;
         this.total = mockedStoredProcedure.getCount();
     }
 

@@ -1,7 +1,5 @@
 package memphis.delegate;
 
-import memphis.mock.Config;
-import memphis.mock.MockSupport;
 import memphis.mock.MockedStoredProcedure;
 
 public class CallableStatementDelegate extends AbstractDelegate {
@@ -9,8 +7,8 @@ public class CallableStatementDelegate extends AbstractDelegate {
     private boolean wasNull;
     private final MockedStoredProcedure mockedStoredProcedure;
 
-    public CallableStatementDelegate(String procName, Config config) {
-        mockedStoredProcedure = MockSupport.getMock(procName, config);
+    public CallableStatementDelegate(MockedStoredProcedure mockedStoredProcedure) {
+        this.mockedStoredProcedure = mockedStoredProcedure;
     }
 
     public boolean wasNull() {

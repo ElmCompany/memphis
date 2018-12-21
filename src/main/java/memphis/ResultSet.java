@@ -4,6 +4,7 @@ import memphis.base.AbstractResultSet;
 import memphis.delegate.ResultSetDelegate;
 import memphis.delegate.ThrowableFunction;
 import memphis.mock.Config;
+import memphis.mock.MockedStoredProcedure;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
@@ -22,9 +23,9 @@ public class ResultSet extends AbstractResultSet {
 
     private final ResultSetDelegate delegate;
 
-    ResultSet(CallableStatement callableStatement, String procName, Config config) {
+    ResultSet(CallableStatement callableStatement, MockedStoredProcedure mockedStoredProcedure) {
         super(callableStatement);
-        this.delegate = new ResultSetDelegate(procName, config);
+        this.delegate = new ResultSetDelegate(mockedStoredProcedure);
     }
 
     @Override

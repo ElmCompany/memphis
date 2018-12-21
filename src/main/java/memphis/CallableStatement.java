@@ -4,6 +4,8 @@ import memphis.base.AbstractCallableStatement;
 import memphis.delegate.CallableStatementDelegate;
 import memphis.delegate.ThrowableFunction;
 import memphis.mock.Config;
+import memphis.mock.MockSupport;
+import memphis.mock.MockedStoredProcedure;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
@@ -24,8 +26,9 @@ public class CallableStatement extends AbstractCallableStatement {
 
     public CallableStatement(Connection connection, String procName, Config config) {
         super(connection);
-        this.resultSet = new ResultSet(this, procName, config);
-        this.delegate = new CallableStatementDelegate(procName, config);
+        MockedStoredProcedure mockedStoredProcedure = MockSupport.getMock(procName, config);
+        this.resultSet = new ResultSet(this, mockedStoredProcedure);
+        this.delegate = new CallableStatementDelegate(mockedStoredProcedure);
     }
 
     @Override
